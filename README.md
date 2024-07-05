@@ -2,8 +2,6 @@
 
 # commands
 
-Inside that directory, you can run several commands:
-
 npx playwright test
 Runs the end-to-end tests.
 
