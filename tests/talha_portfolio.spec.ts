@@ -13,6 +13,7 @@ let xpathofwork: string = '//*[@id="root"]/div[2]/div[1]/nav/div/ul/li[2]/a';
 let xpathofcontact: string = '//*[@id="root"]/div[2]/div[1]/nav/div/ul/li[3]/a';
 let xpathofprojectscontainer: string =
   '//*[@id="root"]/div[2]/section[4]/div[3]';
+//*[@id="root"]/div[2]/section[4]/div[3]
 
 test("correct URL pointed and page title displayed", async ({ page }) => {
   await page.goto("https://mtalham.netlify.app/");
@@ -75,18 +76,25 @@ test("position moved to contact heading correctly using navbar link", async ({
   await expect(page.getByRole("heading", { name: "Contact" })).toBeVisible();
 });
 
-test("scrolled down to projects, random github link clicked and page is opened", async ({
+test("scrolled down to projects, random project link clicked and site is opened", async ({
   page,
 }) => {
   await page.goto("https://mtalham.netlify.app/");
   await expect(page.getByRole("heading", { name: "Projects" })).toBeVisible();
 
-  let indexofproject: number = randomInt(0 - 5);
+  function getRandomInt(): number {
+    let minind: number = 0;
+    let maxind: number = 5;
+    return Math.floor(Math.random() * (maxind - minind + 1)) + minind;
+  }
 
-  //let arrayofprojectsotbetested: string[] = [];
-  //access main heading of projects
+  let indexofproject: number = getRandomInt();
+  //randomInt(min:0 , max:5);
 
-  let randomxpathofprojectscontainer:string=xpathofprojectscontainer+
+  console.log("random number generated: ", indexofproject);
 
-  await page.locator(`${}+`)
+  let livesitelinkofrandomproject: string = `//*[@id="root"]/div[2]/section[4]/div[3]/div[${indexofproject}]/div/div[1]/div/div[1]`;
+
+  //await page.getByRole("link", { name: livesitelinkofrandomproject }).click();
+  await page.locator(`xpath=${livesitelinkofrandomproject}`).click();
 });
