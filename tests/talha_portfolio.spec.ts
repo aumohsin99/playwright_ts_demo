@@ -78,6 +78,7 @@ test("position moved to contact heading correctly using navbar link", async ({
 
 test("scrolled down to projects, random project link clicked and site is opened", async ({
   page,
+  context,
 }) => {
   await page.goto("https://mtalham.netlify.app/");
   await expect(page.getByRole("heading", { name: "Projects" })).toBeVisible();
@@ -88,13 +89,24 @@ test("scrolled down to projects, random project link clicked and site is opened"
     return Math.floor(Math.random() * (maxind - minind + 1)) + minind;
   }
 
-  let indexofproject: number = getRandomInt();
+  let indexOfProject: number = getRandomInt();
   //randomInt(min:0 , max:5);
 
-  console.log("random number generated: ", indexofproject);
+  //console.log("random number generated: ", indexOfProject);
 
-  let livesitelinkofrandomproject: string = `//*[@id="root"]/div[2]/section[4]/div[3]/div[${indexofproject}]/div/div[1]/div/div[1]`;
+  let liveSiteLinkOfRandomProject: string = `//*[@id="root"]/div[2]/section[4]/div[3]/div[${indexOfProject}]/div/div[1]/div/div[1]`;
 
-  //await page.getByRole("link", { name: livesitelinkofrandomproject }).click();
-  await page.locator(`xpath=${livesitelinkofrandomproject}`).click();
+  await page.locator(`xpath=${liveSiteLinkOfRandomProject}`).click();
+
+  // Wait for a new page to be created
+  const newPage = await context.waitForEvent("page");
+
+  // Regular expression to match either part in the URL of the new page
+  const urlPattern =
+    /\/crazy-coder8665\.github\.io\/|\/react-redux-practice-project\//;
+
+  // Assert that the current URL of the new page matches the pattern
+  await expect(newPage.url()).toMatch(urlPattern);
+
+  await expect(newPage.title).toBeDefined();
 });
